@@ -7,18 +7,20 @@ require('dotenv').config()
 
 const pool = new Pool({
     user: 'default',
-    host: 'ep-orange-smoke-08960365.us-east-1.postgres.vercel-storage.com',
+    host: 'ep-calm-mud-47680676-pooler.us-east-1.postgres.vercel-storage.com',
     database: 'verceldb',
-    password: 'bf3BTmnKYd4P',
+    password: 'pGSy1kb6vYUP',
     port: 5432,
     ssl: {rejectUnauthorized: false}
 });
 
-app.get('/students', function (req, res) {
-    const listUsersQuery = `SELECT * FROM students;`;
+//"postgres://default:pGSy1kb6vYUP@ep-calm-mud-47680676.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+
+app.get('/consulta', function (req, res) {
+    const listUsersQuery = `SELECT * FROM historiaclinica;`;
     pool.query(listUsersQuery)
         .then(data => {
-            console.log("List students: ", data.rows);
+            console.log("List consultas: ", data.rows);
             return res.send(data.rows);
         })
         .catch(err => {
@@ -26,11 +28,11 @@ app.get('/students', function (req, res) {
         });
 });
 
-app.get('/students/:id', function (req, res) {
-    const listUsersQuery = `SELECT * FROM students WHERE id = ${req.params.id};`;
+app.get('/consulta/:id', function (req, res) {
+    const listUsersQuery = `SELECT * FROM historiaclinica WHERE id = ${req.params.id};`;
     pool.query(listUsersQuery)
         .then(data => {
-            console.log("List students: ", data.rows);
+            console.log("List consultas: ", data.rows);
             return res.send(data.rows);
         })
         .catch(err => {
@@ -38,42 +40,42 @@ app.get('/students/:id', function (req, res) {
         });
 });
 
-app.post('/students', function (req, res) {
+app.post('/consulta', function (req, res) {
     const listUsersQuery = `
-    INSERT INTO students(id, name, lastname, notes) VALUES
-    (${req.body.id}, '${req.body.name}', '${req.body.lastname}', '${req.body.notes}');
+    INSERT INTO historiaclinica(id, Nombre, Fecha, MotivoConsulta, Doctor, Notas, Imagen) VALUES
+    (${req.body.id}, '${req.body.Nombre}', '${req.body.Fecha}', '${req.body.MotivoConsulta}', '${req.body.Doctor}', '${req.body.Notas}', '${req.body.Imagen}');
 `;
     pool.query(listUsersQuery)
         .then(data => {
-            console.log("List students: ", data.rows);
+            console.log("List consulta: ", data.rows);
             return res.send(data.rows);
         })
         .catch(err => {
             console.error(err);
         });
 
-    return res.send('students insertation');
+    return res.send('consulta creada');
 })
 
-app.put('/students/:id', function (req, res) {
+app.put('/consulta/:id', function (req, res) {
     const listUsersQuery = `
-    UPDATE students SET name= '${req.body.name}', lastname = '${req.body.lastname}',notes= '${req.body.notes}' WHERE id = ${req.params.id};`;
+    UPDATE historiaclinica SET Nombre= '${req.body.Nombre}', Fecha= '${req.body.Fecha}', MotivoConsulta= '${req.body.MotivoConsulta}', Doctor= '${req.body.Doctor}', Notas= '${req.body.Notas}', Imagen= '${req.body.Imagen}' WHERE id = ${req.params.id};`;
     console.log(listUsersQuery)
     pool.query(listUsersQuery)
         .then(data => {
-            console.log("List students: ", data.rows);
+            console.log("List consulta: ", data.rows);
             return res.send(data.rows);
         })
         .catch(err => {
             console.error(err);
         });
 
-    return res.send('students actualiced');
+    return res.send('Consulta Modificada');
 })
 
-app.delete('/students/:id', function (req, res) {
+app.delete('/consulta/:id', function (req, res) {
     const deleteQuery = `
-    DELETE FROM students WHERE id = ${req.params.id};`;
+    DELETE FROM historiaclinica WHERE id = ${req.params.id};`;
     pool.query(deleteQuery)
         .then(data => {
             console.log(data.rows);
