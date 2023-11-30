@@ -1,6 +1,8 @@
 const express = require('express');
 const { Pool } = require('pg');
 const app = express();
+const {swaggerDocs} = require('./swagger');
+
 const port = process.env.PORT || 3000;
 app.use(express.json());
 require('dotenv').config()  
@@ -93,5 +95,6 @@ app.delete('/consulta/:id', function (req, res) {
 
 
 app.listen(port, () => {
-    console.log('the app is runnig');
-})
+console.log('the app is runnig');
+swaggerDocs(app, port);
+});
